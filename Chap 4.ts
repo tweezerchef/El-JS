@@ -13,24 +13,27 @@ const arrayToList = (array: number[]) => {
 }
 
 
-const listToArray = (list: List) => {
+const listToArray = (list: List | null): number[] => {
     let listArray: number[] = [];
-    const helperFunc = (list: List) => {
-        for (let val in list) {
-            if (val === 'value') {
-                listArray.push(list[val])
-            }
-            else if (val === 'rest' && list[val] === null) {
-                return
-            }
-            else if (val === 'rest') {
-                helperFunc(list[val])
-            }
+
+    const helperFunc = (list: List | null) => {
+        if (list === null) {
+            return;
         }
 
-    }
-        ;
+        for (let val in list) {
+            if (val === 'value') {
+                listArray.push(list[val]);
+            } else if (val === 'rest') {
+                if (list[val] !== null) {
+                    helperFunc(list[val]);
+                }
+            }
+        }
+    };
+
     helperFunc(list);
+
     return listArray;
 };
 console.log(arrayToList([10, 20]));
